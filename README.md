@@ -89,18 +89,9 @@ Eksperimen ini bertujuan untuk melatih model SkipGram menggunakan data dari News
 
 ### **4. Kesimpulan dan Perbaikan**
 #### **4.1 Kesimpulan**
-- Model mengalami **divergensi** saat pelatihan, terutama pada **epoch setelah 16**, menyebabkan nilai loss menjadi *inf*.
-- Embedding tetap dapat menghasilkan kedekatan kata yang masuk akal, tetapi perlu stabilisasi dalam proses pelatihan.
-- Pemilihan **window size yang lebih besar** dapat meningkatkan representasi hubungan kata dalam kalimat.
+- Embedding tetap dapat menghasilkan kedekatan kata tetapi agak kurang relevan
 
-#### **4.2 Perbaikan yang Dapat Dilakukan**
-- **Gunakan nilai pembelajaran (*learning rate*) lebih kecil** untuk mencegah gradien meledak.
-- **Gunakan regulasi numerik dalam softmax**, seperti menambahkan konstanta kecil (`epsilon`) sebelum menghitung log.
+Perbaikan yang Dapat Dilakukan
 - **Evaluasi dataset** untuk memastikan keberagaman kata cukup besar agar model tidak mengalami bias terhadap kata tertentu.
-- **Batasi rentang nilai bobot awal** agar tidak terlalu besar.
-
-### **5. Rekomendasi Lanjutan**
-- Mencoba metode *Negative Sampling* untuk mengatasi masalah skala probabilitas pada Softmax.
-- Menggunakan **optimasi Adam** agar pembaruan bobot lebih stabil.
-- Menguji model dengan dataset yang lebih besar dan bervariasi untuk hasil yang lebih representatif.
+- Melakukan Stopword Removal dan Steamming agar kata-kata yang tidak perlu bisa dieleminasi dan fokus ke bentuk kata dasar
 
