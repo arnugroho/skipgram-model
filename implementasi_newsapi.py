@@ -37,6 +37,20 @@ class SkipGramModel:
         exp_x = np.exp(x - np.max(x))
         return exp_x / exp_x.sum()
 
+    def get_most_similar(self, word, word2idx, top_n=5):
+        if word not in word2idx:
+            return []
+        word_vector = self.W1[word2idx[word]]
+        similarities = {}
+        for other_word, idx in word2idx.items():
+            if other_word == word:
+                continue
+            other_vector = self.W1[idx]
+            similarity = np.dot(word_vector, other_vector) / (
+                        np.linalg.norm(word_vector) * np.linalg.norm(other_vector))
+            similarities[other_word] = similarity
+        return sorted(similarities.items(), key=lambda x: x[1], reverse=True)[:top_n]
+
 
 def fetch_news(api_key, query="technology", page_size=10):
     url = f"https://newsapi.org/v2/everything?q={query}&pageSize={page_size}&apiKey={api_key}"
@@ -124,6 +138,12 @@ def train_example(api_key, window_sizes=[1, 2, 3], embedding_dims=[20, 50, 100])
                 word_idx = word2idx[word]
                 word_vector = model.W1[word_idx]
                 print(f"{word}: {word_vector}")
+
+            # Evaluasi kedekatan kata
+            test_words = list(word2idx.keys())[:5]  # Cek beberapa kata pertama
+            for test_word in test_words:
+                similar_words = model.get_most_similar(test_word, word2idx)
+                print(f"Most similar words to '{test_word}': {similar_words}")
 
 
 if __name__ == "__main__":
