@@ -9,7 +9,7 @@ Eksperimen ini bertujuan untuk melatih model SkipGram menggunakan data dari News
 - Model SkipGram dilatih dengan variasi **window size** dan **dimensi embedding**.
 - Evaluasi dilakukan dengan melihat **loss** selama pelatihan dan **kedekatan kata** berdasarkan embedding yang dihasilkan.
 
-### **3. Hasil dan Temuan**
+### **3. Penjelasan Hasil dan Temuan dari parameter experiment**
 #### **3.1 Perbandingan Loss Selama Pelatihan**
 | Window Size | Embedding Dimensi | Epoch Sebelum Inf | Loss Awal | Loss Akhir Sebelum Inf |
 |------------|------------------|-------------------|-----------|------------------------|
