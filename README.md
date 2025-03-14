@@ -23,7 +23,7 @@ Eksperimen ini bertujuan untuk melatih model SkipGram menggunakan data dari News
 | 3          | 50               | 6                 | 21.14     | 138.53                 |
 | 3          | 100              | 4                 | 33.08     | 117.22                 |
 
-> *Catatan: Model mengalami **inf loss** setelah epoch tertentu pada window size 1 dengan embedding 20 dan 50. Eksperimen untuk ukuran window 2 dan 3 belum dilakukan.*
+> *Catatan: Model mengalami **inf loss** setelah epoch tertentu
 
 #### **3.2 Kedekatan Kata Berdasarkan Window Size dan Embedding Size**
 
