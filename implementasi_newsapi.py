@@ -59,7 +59,7 @@ def preprocess_texts(texts):
     return words
 
 
-def build_training_pairs(words, window_size=2):
+def build_training_pairs(words, window_size):
     training_pairs = []
     for i, target_word in enumerate(words):
         for j in range(-window_size, window_size + 1):
@@ -69,63 +69,63 @@ def build_training_pairs(words, window_size=2):
     return training_pairs
 
 
-def train_example(api_key):
+def train_example(api_key, window_sizes=[1, 2, 3], embedding_dims=[20, 50, 100]):
     news_titles = fetch_news(api_key)
     words = preprocess_texts(news_titles)
     if not words:
-        print("No words extracted from news articles. Training aborted.")
+        print("No words found after preprocessing. Exiting.")
         return None, None
 
     word_counts = Counter(words)
     vocab = list(word_counts.keys())
     word2idx = {word: idx for idx, word in enumerate(vocab)}
-    training_pairs = build_training_pairs(words)
 
-    if not training_pairs:
-        print("No training pairs generated. Training aborted.")
-        return None, None
-
-    # Initialize model
-    model = SkipGramModel(vocab_size=len(vocab), embedding_dim=20)
-
-    # Training loop
-    epochs = 100
-    for epoch in range(epochs):
-        total_loss = 0
-        for target_word, context_word in training_pairs:
-            if target_word not in word2idx or context_word not in word2idx:
+    for window_size in window_sizes:
+        for embedding_dim in embedding_dims:
+            print(f"Training with window size {window_size} and embedding dimension {embedding_dim}")
+            training_pairs = build_training_pairs(words, window_size)
+            if not training_pairs:
+                print(f"No training pairs generated for window size {window_size}. Skipping.")
                 continue
-            # Convert words to one-hot vector
-            target_vector = np.zeros(len(vocab))
-            target_vector[word2idx[target_word]] = 1
 
-            context_vector = np.zeros(len(vocab))
-            context_vector[word2idx[context_word]] = 1
+            # Initialize model
+            model = SkipGramModel(vocab_size=len(vocab), embedding_dim=embedding_dim)
 
-            # forward pass
-            hidden, output = model.forward(target_vector)
+            # Training loop
+            epochs = 100
+            for epoch in range(epochs):
+                total_loss = 0
+                for target_word, context_word in training_pairs:
+                    if target_word not in word2idx or context_word not in word2idx:
+                        continue
+                    # Convert words to one-hot vector
+                    target_vector = np.zeros(len(vocab))
+                    target_vector[word2idx[target_word]] = 1
 
-            # compute loss
-            loss = -np.log(output[word2idx[context_word]])
+                    context_vector = np.zeros(len(vocab))
+                    context_vector[word2idx[context_word]] = 1
 
-            # backward pass
-            model.backward(target_vector, context_vector)
+                    # forward pass
+                    hidden, output = model.forward(target_vector)
 
-            total_loss += loss
+                    # compute loss
+                    loss = -np.log(output[word2idx[context_word]])
 
-        if len(training_pairs) > 0:
-            print(f"Epoch {epoch + 1}/{epochs}, Loss: {total_loss / len(training_pairs)}")
+                    # backward pass
+                    model.backward(target_vector, context_vector)
 
-    return model, word2idx
+                    total_loss += loss
+
+                print(f"Epoch {epoch + 1}/{epochs}, Loss: {total_loss / len(training_pairs)}")
+
+            # Output embeddings
+            print(f"Embeddings for window size {window_size} and embedding dimension {embedding_dim}")
+            for word in word2idx:
+                word_idx = word2idx[word]
+                word_vector = model.W1[word_idx]
+                print(f"{word}: {word_vector}")
 
 
 if __name__ == "__main__":
     api_key = "44dfd24144424d83bebfd58813ab6cf7"  # Ganti dengan API key yang valid
-    model, word2idx = train_example(api_key)
-
-    if model and word2idx:
-        # get word embeddings
-        for word in word2idx:
-            word_idx = word2idx[word]
-            word_vector = model.W1[word_idx]
-            print(f"{word}: {word_vector}")
+    train_example(api_key)
