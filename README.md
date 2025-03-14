@@ -1,5 +1,7 @@
 **Analisis dan Dokumentasi Hasil Eksperimen SkipGram dengan NewsAPI**
 
+##### Info : Deskripsi code terdapat pada comment masing-masing blok code yaitu pada file implementasi code
+
 ### **1. Pendahuluan**
 Eksperimen ini bertujuan untuk melatih model SkipGram menggunakan data dari NewsAPI dengan variasi **window size** (1, 2, 3) dan **dimensi embedding** (20, 50, 100). Model diharapkan dapat menemukan hubungan antar kata dalam konteks berita dan mengevaluasi kedekatan kata berdasarkan embedding yang dihasilkan.
 
@@ -85,7 +87,7 @@ Eksperimen ini bertujuan untuk melatih model SkipGram menggunakan data dari News
 |                  | now        | works, digital, technology, samsungs, hope |
 
 - Model berhasil mengidentifikasi kata-kata yang memiliki konteks serupa.
-- Namun, beberapa pasangan kata tampak tidak logis, kemungkinan besar karena **pelatihan yang tidak stabil akibat error numerik**.
+- Namun, beberapa pasangan kata tampak tidak logis
 
 ### **4. Kesimpulan dan Perbaikan**
 #### **4.1 Kesimpulan**
